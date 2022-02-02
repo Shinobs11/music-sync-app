@@ -1,0 +1,1 @@
+export {testAction} from '../../../../redux/DUCKS/main';

@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Button, View } from 'react-native';
+import { ActionSheetIOS, Button, View } from 'react-native';
 import { authHook } from './auth/Auth';
 import { Platform } from 'react-native';
-import { SpotifySession } from "react-native-spotify-remote";
-import { AuthRequest } from "expo-auth-session";
-function SpotifyContainer() {
+import {PropsFromRedux, connector} from './redux/connector';
+import {testAction} from './redux/actions';
 
+type Props = PropsFromRedux & {};
 
-    let [isAuthed, setAuthed] = useState(Boolean)
+function SpotifyContainer(props: Props) {
+    const {test} = props;
+
+    let [isAuthed, setAuthed] = useState(Boolean);
 
     useEffect(() => {
         // alert("SpotifyContainer: UseEffect works.");
-        
-    }, [])
-    var [req, res, promptAsync] = authHook();
+    },[]);
 
+    var [req, res, promptAsync] = authHook();
 
     let AuthButton = () => {
         if(!isAuthed){
@@ -27,13 +29,20 @@ function SpotifyContainer() {
         else return (<></>)
     }
 
-
-
     return (
         <>
         <AuthButton/>
+        <Button onPress={()=>{testAction(1+test)}} title="press"/>
         </>
     )
 }
 
-export default SpotifyContainer;
+
+
+
+
+
+
+
+
+export default connector(SpotifyContainer);

@@ -6,7 +6,7 @@ interface testType{
 }
 
 //create testAction with number|undefined generic
-const testAction = createAction<number|undefined>("test");
+export const testAction = createAction<number|undefined>("test");
 
 
 
