@@ -2,6 +2,10 @@ import { FontAwesome } from '@expo/vector-icons';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
+import { getAuthFromSecureStore } from '../redux/DUCKS/auth-duck';
+import store from '../redux/store';
+
+
 
 export default function useCachedResources() {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
@@ -17,6 +21,10 @@ export default function useCachedResources() {
           ...FontAwesome.font,
           'space-mono': require('../assets/fonts/SpaceMono-Regular.ttf'),
         });
+        //grab key from SecureStore(Coule be used for sessions and for authentication)
+        store.dispatch(getAuthFromSecureStore());
+
+
       } catch (e) {
         // We might want to provide this error information to an error reporting service
         console.warn(e);

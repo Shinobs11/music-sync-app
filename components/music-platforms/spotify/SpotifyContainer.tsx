@@ -3,19 +3,20 @@ import { ActionSheetIOS, Button, View } from 'react-native';
 import { authHook } from './auth/Auth';
 import { Platform } from 'react-native';
 import {PropsFromRedux, connector} from './redux/connector';
-import {testAction} from './redux/actions';
+
+
 
 type Props = PropsFromRedux & {};
 
 function SpotifyContainer(props: Props) {
-    const {test} = props;
+    const {test, testAction, isAuthed} = props;
 
-    let [isAuthed, setAuthed] = useState(Boolean);
+    
 
     useEffect(() => {
         // alert("SpotifyContainer: UseEffect works.");
+        alert(isAuthed);
     },[]);
-
     var [req, res, promptAsync] = authHook();
 
     let AuthButton = () => {
@@ -32,7 +33,7 @@ function SpotifyContainer(props: Props) {
     return (
         <>
         <AuthButton/>
-        <Button onPress={()=>{testAction(1+test)}} title="press"/>
+        {/* <Button onPress={()=>{testAction(1+test); console.log(test)}} title="press"/> */}
         </>
     )
 }

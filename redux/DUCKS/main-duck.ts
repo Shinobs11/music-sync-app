@@ -10,9 +10,6 @@ export const testAction = createAction<number|undefined>("test");
 
 
 
-
-
-
 //init state with testType schema
 const initState = {
     test:0
@@ -22,7 +19,7 @@ const initState = {
 //export and construct reducer given initState and testaction
 export default createReducer(initState, (builder) => {
     builder.addCase(testAction, (state, action)=>{
-        if(action.payload){
+        if(action.payload){    
             state.test+=action.payload
         }
     })

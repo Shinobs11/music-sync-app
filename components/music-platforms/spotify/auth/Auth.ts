@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import { Platform } from 'react-native';
 import Auth, { AuthRequest, AuthRequestPromptOptions, AuthSessionResult, useAuthRequest } from "expo-auth-session";
+import { setItemAsync, isAvailableAsync } from 'expo-secure-store';
 // import Random from "expo-random";
 // import Crypto from "expo-crypto";
 import {polyfillWebCrypto} from 'expo-standard-web-crypto';

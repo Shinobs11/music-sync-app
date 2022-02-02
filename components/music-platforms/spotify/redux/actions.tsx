@@ -1,1 +1,1 @@
-export {testAction} from '../../../../redux/DUCKS/main';
+export {testAction} from '../../../../redux/DUCKS/main-duck';
