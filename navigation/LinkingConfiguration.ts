@@ -10,14 +10,14 @@ import * as Linking from 'expo-linking';
 import { RootStackParamList } from '../types';
 
 const linking: LinkingOptions<RootStackParamList> = {
-  prefixes: [Linking.makeUrl('/')],
+  prefixes: ["music-sync://"],
   config: {
     screens: {
       Root: {
         screens: {
           TabOne: {
             screens: {
-              TabOneScreen: 'one',
+              TabOneScreen: 'spotify-redirect',
             },
           },
           TabTwo: {

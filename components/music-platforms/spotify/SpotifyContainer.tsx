@@ -1,43 +1,48 @@
 import React, { useEffect, useState } from "react";
 import { ActionSheetIOS, Button, View } from 'react-native';
-import { authHook, handlePrompt } from './auth/Auth';
 import { Platform } from 'react-native';
-import {PropsFromRedux, connector} from './redux/connector';
-
+import { PropsFromRedux, connector } from './redux/connector';
+import {authFlow} from './auth/Auth';
 
 
 type Props = PropsFromRedux & {};
 
 function SpotifyContainer(props: Props) {
-    const {test, testAction, isAuthed, authObject} = props;
+    const {isAuthed, authObject, setAuthInSecureStore, getAuthFromSecureStore } = props;
 
-    
+
+
+
 
     useEffect(() => {
-        // alert("SpotifyContainer: UseEffect works.");
-        if(authObject){
-            alert("Authed! Token is: " + authObject.accessToken)
-        }
-    },[]);
-    var [req, res, promptAsync] = authHook();
+        // if (authObject) {
+        //     alert("Authed! Token is: " + authObject.accessToken)
+        // }
+    }, []);
 
-    let AuthButton = () => {
-        if(!isAuthed){
-        return <Button //TODOS: Accessibility options should be implemented towards the completion of the project
-                //TODOS: Still need to implement conditionals based on OS
-                onPress={() => {alert("Pressed")}}
-                title="Login to Spotify"
-            />
+    const AuthButton = () => {
+        const onPress = () =>{
+            setAuthInSecureStore(authFlow());
+        }
+
+        if (!isAuthed) {
+            return (
+                <>
+                    <Button
+                        onPress={onPress}
+                        title="Login to Spotify"
+                    />
+                </>)
         }
         else return (<></>)
     }
 
     return (
         <>
-        <View>
-        <AuthButton/>
-        {/* <Button onPress={()=>{testAction(1+test); console.log(test)}} title="press"/> */}
-        </View>
+            <View>
+                {AuthButton()}
+                <Button onPress={()=>{console.log(authObject)}} title="Log Auth object"/>
+            </View>
         </>
     )
 }
