@@ -22,7 +22,7 @@ export default function useCachedResources() {
           'space-mono': require('../assets/fonts/SpaceMono-Regular.ttf'),
         });
         //grab key from SecureStore(Coule be used for sessions and for authentication)
-        store.dispatch(getAuthFromSecureStore());
+        // store.dispatch(getAuthFromSecureStore());
 
 
       } catch (e) {

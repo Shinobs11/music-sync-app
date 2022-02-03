@@ -1,10 +1,11 @@
 import React, {useEffect} from 'react';
 import { Platform } from 'react-native';
 import Auth, { AuthRequest, AuthRequestPromptOptions, AuthSessionResult, useAuthRequest } from "expo-auth-session";
-import { setItemAsync, isAvailableAsync } from 'expo-secure-store';
+import store from '../../../../redux/store';
 // import Random from "expo-random";
 // import Crypto from "expo-crypto";
 import {polyfillWebCrypto} from 'expo-standard-web-crypto';
+import { setAuthInSecureStore } from '../../../../redux/DUCKS/auth-duck';
 polyfillWebCrypto();
 
 
@@ -77,11 +78,14 @@ function authHook(){
 }
 
 async function handlePrompt(promptAsync:()=>Promise<Auth.AuthSessionResult>){
+    console.log("Handle Prompt Entered")
     let res = await promptAsync();
 
     switch(res.type){
         case 'success':{
-            
+            if(res.authentication){
+                store.dispatch(setAuthInSecureStore(res.authentication));
+            }
             break;
         }
         case 'error': {
@@ -102,6 +106,7 @@ async function handlePrompt(promptAsync:()=>Promise<Auth.AuthSessionResult>){
         }
         default:{
             console.error("???????")
+            break;
         }
 
     }
@@ -109,4 +114,4 @@ async function handlePrompt(promptAsync:()=>Promise<Auth.AuthSessionResult>){
 
 
 
-export {authHook};
+export {authHook, handlePrompt};
