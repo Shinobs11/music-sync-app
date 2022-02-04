@@ -1,15 +1,19 @@
 import React, {useEffect} from 'react';
-import {View, Platform} from 'react-native';
-
+import {View,Button, Platform} from 'react-native';
 
 export default function(){
-    useEffect(
-        ()=>{
-            alert("Test works");
-        }
-    )
+    // useEffect(
+    //     ()=>{
+    //         alert("Test works");
+    //     }
+    // )
+
+    const onPress = () =>{
+    
+    }
     return(
         <>
+            <Button onPress={} title="Delete key"
         </>
     )
 }

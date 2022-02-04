@@ -8,16 +8,14 @@ import {authFlow} from './auth/Auth';
 type Props = PropsFromRedux & {};
 
 function SpotifyContainer(props: Props) {
-    const {isAuthed, authObject, setAuthInSecureStore, getAuthFromSecureStore } = props;
+    const {isAuthed, authObject, setAuthInSecureStore, getAuthFromSecureStore, deleteAuthInSecureStore } = props;
 
 
 
 
 
     useEffect(() => {
-        // if (authObject) {
-        //     alert("Authed! Token is: " + authObject.accessToken)
-        // }
+        
     }, []);
 
     const AuthButton = () => {
@@ -42,6 +40,7 @@ function SpotifyContainer(props: Props) {
             <View>
                 {AuthButton()}
                 <Button onPress={()=>{console.log(authObject)}} title="Log Auth object"/>
+                <Button onPress={()=>{deleteAuthInSecureStore()}} title="Test delete function/Test get"/>
             </View>
         </>
     )
