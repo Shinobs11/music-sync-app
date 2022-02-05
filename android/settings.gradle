@@ -1,4 +1,26 @@
-rootProject.name = 'expo-test'
+rootProject.name = 'music-sync-app'
+include ':react-native-spotify-remote'
+project(':react-native-spotify-remote').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-spotify-remote/android')
+include ':react-native-screens'
+project(':react-native-screens').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-screens/android')
+include ':react-native-safe-area-context'
+project(':react-native-safe-area-context').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-safe-area-context/android')
+include ':react-native-events'
+project(':react-native-events').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-events/android')
+include ':expo-random'
+project(':expo-random').projectDir = new File(rootProject.projectDir, '../node_modules/expo-random/android')
+include ':expo'
+project(':expo').projectDir = new File(rootProject.projectDir, '../node_modules/expo/android')
+include ':react-native-spotify-remote'
+project(':react-native-spotify-remote').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-spotify-remote/android')
+include ':react-native-screens'
+project(':react-native-screens').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-screens/android')
+include ':react-native-safe-area-context'
+project(':react-native-safe-area-context').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-safe-area-context/android')
+include ':expo-random'
+project(':expo-random').projectDir = new File(rootProject.projectDir, '../node_modules/expo-random/android')
+include ':expo'
+project(':expo').projectDir = new File(rootProject.projectDir, '../node_modules/expo/android')
 
 apply from: new File(["node", "--print", "require.resolve('expo/package.json')"].execute(null, rootDir).text.trim(), "../scripts/autolinking.gradle");
 useExpoModules()

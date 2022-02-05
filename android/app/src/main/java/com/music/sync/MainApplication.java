@@ -7,6 +7,17 @@ import androidx.annotation.NonNull;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.reactlibrary.RNSpotifyRemotePackage;
+import com.swmansion.rnscreens.RNScreensPackage;
+import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
+import com.lufinkey.react.eventemitter.RNEventEmitterPackage;
+import expo.modules.random.RandomPackage;
+import expo.modules.ExpoModulesPackage;
+import com.reactlibrary.RNSpotifyRemotePackage;
+import com.swmansion.rnscreens.RNScreensPackage;
+import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
+import expo.modules.random.RandomPackage;
+import expo.modules.ExpoModulesPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;

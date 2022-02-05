@@ -22,6 +22,18 @@ target 'expotest' do
   #   use_flipper!('Flipper' => '0.75.1', 'Flipper-Folly' => '2.5.3', 'Flipper-RSocket' => '1.3.1')
   # end
 
+  pod 'Expo', :path => '../node_modules/expo'
+
+  pod 'EXRandom', :path => '../node_modules/expo-random'
+
+  pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
+
+  pod 'RNScreens', :path => '../node_modules/react-native-screens'
+
+  pod 'RNSpotifyRemote', :path => '../node_modules/react-native-spotify-remote'
+
+  pod 'RNEventEmitter', :path => '../node_modules/react-native-events'
+
   post_install do |installer|
     react_native_post_install(installer)
 
