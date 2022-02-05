@@ -3,6 +3,7 @@ import { ActionSheetIOS, Button, View } from 'react-native';
 import { Platform } from 'react-native';
 import { PropsFromRedux, connector } from './redux/connector';
 import {authFlow} from './auth/Auth';
+import SpotifyPlayer from './player/SpotifyPlayer';
 
 
 type Props = PropsFromRedux & {};
@@ -41,6 +42,7 @@ function SpotifyContainer(props: Props) {
                 {AuthButton()}
                 <Button onPress={()=>{console.log(authObject)}} title="Log Auth object"/>
                 <Button onPress={()=>{deleteAuthInSecureStore()}} title="Test delete function/Test get"/>
+                <SpotifyPlayer authObject={authObject}/>
             </View>
         </>
     )

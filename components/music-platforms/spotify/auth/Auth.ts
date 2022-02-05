@@ -46,20 +46,12 @@ const TOKEN_SWAP_URI = makeRedirectUri({ ...uriOptions, path: "spotify-swap" })
 
 
 const generateRandomString = (n: number) => {
-    // let opt:Crypto.CryptoDigestOptions = {encoding: Crypto.CryptoEncoding.HEX}
-    // let key = await subtle.generateKey({
-    //     name:'HMAC',
-    //     hash:"SHA-256",
-    //     length: n,
-    // }, true, ['sign', 'verify'])
-
-    // return subtle.exportKey("raw",key);
     var arr: String[] = []
     crypto.getRandomValues(new Uint8Array(n)).forEach(x => arr.push(x.toString(n)))
     return arr.join('');
 }
 
-const SCOPES = [
+export const SCOPES = [
     "app-remote-control",
     "playlist-modify-private",
     "playlist-read-collaborative",
@@ -93,12 +85,7 @@ const codeRequestConfig =  ():AuthRequestConfig => {
 
 
 
-// const tokenRequestConfig = ():TokenRequestConfig =>{
-//     return{
-//         clientId: CLIENT_ID,
-//         clientSecret: CLIENT_SECRET
-//     }
-// }
+
 
 const accessTokenRequestConfig = (promptRes: PromptResult, authReq:AuthRequest ):AccessTokenRequestConfig =>{
     const codeVerifierExists = (codeVerifier:string|undefined):string =>{

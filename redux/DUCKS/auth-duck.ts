@@ -3,7 +3,7 @@ import { isAvailableAsync, getItemAsync, SecureStoreOptions, WHEN_UNLOCKED, setI
 import { ActionSheetIOS, Platform } from 'react-native';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { TokenResponse } from "expo-auth-session";
-
+import { NonSerializedTokenResponse } from "../../types/authTypes";
 
 
 
@@ -41,14 +41,7 @@ const getAuthFromSecureStore = createAsyncThunk("auth/getAuthFromSecureStore",
 )
 
 // Interface in question
-export interface NonSerializedTokenResponse {
-    "accessToken": string,
-    "expiresIn": number,
-    "issuedAt": number,
-    "refreshToken": string,
-    "scope": string,
-    "tokenType": string
-}
+
 
 const setAuthInSecureStore = createAsyncThunk("auth/setAuthInSecureStore", async (tokenPromise: Promise<TokenResponse | undefined>) => {
     try {
@@ -110,7 +103,7 @@ const deleteAuthInSecureStore = createAsyncThunk("auth/deleteAuthInSecureStore",
 }
 )
 
-interface testType {
+interface authState {
     isAuthed: boolean | undefined,
     authObject?: NonSerializedTokenResponse
 }
@@ -119,7 +112,7 @@ interface testType {
 //init state with testType schema
 const initState = {
     isAuthed: undefined
-} as testType
+} as authState
 
 
 //export and construct reducer given initState and testaction

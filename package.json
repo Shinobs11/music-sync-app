@@ -19,6 +19,7 @@
     "@react-navigation/native-stack": "^6.1.0",
     "@reduxjs/toolkit": "^1.7.1",
     "ansi-regex": "^5.0.1",
+    "axios": "^0.25.0",
     "expo": "~44.0.0",
     "expo-asset": "~8.4.6",
     "expo-auth-session": "~3.5.0",
