@@ -1,7 +1,8 @@
 apply plugin: "com.android.application"
 
 import com.android.build.OutputFile
-
+import java.lang.System
+import java.io.PrintStream
 /**
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
  * and bundleReleaseJsAndAssets).
@@ -122,6 +123,11 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  * and the benefits of using Hermes will therefore be sharply reduced.
  */
 def enableHermes = project.ext.react.get("enableHermes", false);
+def keystore = System.getenv("KEYSTORE")
+// SO TURNS OUT I CAN JUST USE JAVA IN GRADLE
+//WONDERFUL TO KNOW THANKS FOR THE COMPLETELY USELESS DOCS 
+//OH MY GOD
+//AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHh
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -148,10 +154,11 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
+			
+            storeFile file(keystore+"/music-sync-debug.keystore")
+            storePassword 'f89c5c28c8757ff338b2d46e76631b93'
+            keyAlias '62a5e3b98b4c3768ade97d1034eeb3e7'
+            keyPassword 'f89c5c28c8757ff338b2d46e76631b93'
         }
     }
     buildTypes {

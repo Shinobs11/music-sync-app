@@ -6,7 +6,7 @@ import store from './redux/store';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
-import 'expo-dev-client';
+
 
 export default function App() {
     
