@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 import { Button } from 'react-native';
 import { Text, View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
+import { RootTabScreenProps } from '../../types';
 import SpotifyContainer from '../components/music-platforms/spotify/SpotifyContainer';
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   return (
