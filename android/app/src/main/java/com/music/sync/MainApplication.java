@@ -1,35 +1,23 @@
 package com.music.sync;
 
+import java.lang.reflect.InvocationTargetException;
+
+import java.util.List;
+
 import android.app.Application;
-import android.content.Context;
 import android.content.res.Configuration;
 import androidx.annotation.NonNull;
-
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import com.reactlibrary.RNSpotifyRemotePackage;
-import com.swmansion.rnscreens.RNScreensPackage;
-import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
-import com.lufinkey.react.eventemitter.RNEventEmitterPackage;
-import expo.modules.random.RandomPackage;
-import expo.modules.ExpoModulesPackage;
-import com.reactlibrary.RNSpotifyRemotePackage;
-import com.swmansion.rnscreens.RNScreensPackage;
-import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
-import expo.modules.random.RandomPackage;
-import expo.modules.ExpoModulesPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
-
+import android.content.Context;
+import com.lufinkey.react.eventemitter.RNEventEmitterPackage;
+import com.reactlibrary.RNSpotifyRemotePackage;
 import expo.modules.ApplicationLifecycleDispatcher;
 import expo.modules.ReactNativeHostWrapper;
-
-import com.facebook.react.bridge.JSIModulePackage;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
   private final ReactNativeHost mReactNativeHost = new ReactNativeHostWrapper(
@@ -45,6 +33,8 @@ public class MainApplication extends Application implements ReactApplication {
       @SuppressWarnings("UnnecessaryLocalVariable")
       List<ReactPackage> packages = new PackageList(this).getPackages();
       // Packages that cannot be autolinked yet can be added manually here, for example:
+        // packages.add(new RNEventEmitterPackage());
+		// packages.add(new RNSpotifyRemotePackage());
       // packages.add(new MyReactNativePackage());
       return packages;
     }

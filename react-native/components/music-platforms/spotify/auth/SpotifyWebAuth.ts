@@ -1,26 +1,20 @@
-import React, { useEffect } from 'react';
+
 import { Platform } from 'react-native';
-import Auth, {
+import {
     AuthRequest,
     AuthRequestPromptOptions,
     AuthSessionResult,
-    useAuthRequest,
-    makeRedirectUri,
-    AuthSessionRedirectUriOptions,
     exchangeCodeAsync,
     fetchDiscoveryAsync,
-    fetchUserInfoAsync,
-    startAsync,
     DiscoveryDocument,
     loadAsync,
     AuthRequestConfig,
-    TokenRequestConfig,
     TokenResponse,
     AccessTokenRequestConfig,
     ResponseType
 } from "expo-auth-session";
 import { polyfillWebCrypto } from 'expo-standard-web-crypto';
-import { auth } from 'react-native-spotify-remote';
+
 polyfillWebCrypto();
 
 
@@ -29,20 +23,13 @@ const CLIENT_ID = "cf9eb20ddb254f6092c24e80d37317f3"
 //TODO: extremely ill-advised to hardcode client-secret, for the love of god remove later.
 const CLIENT_SECRET = "9b75f8b08c7f4919857e757de193a24f"
 //TODO: Would like to get a dedicated server for this, I'm not sure how I'll get this to work at school tho.
-// const REDIRECT_URL = "music-sync://spotify-redirect"
-// const TOKEN_REFRESH_URL = "music-sync://spotify-refresh"
-// const TOKEN_SWAP_URL = "music-sync://spotify-swap"
 
 
-const uriOptions: AuthSessionRedirectUriOptions = {
-    native: "music-sync",
-    path: "spotify-redirect",
-    // useProxy: true
-}
 
-const REDIRECT_URI = makeRedirectUri(uriOptions)
-const TOKEN_REFRESH_URI = makeRedirectUri({ ...uriOptions, path: "spotify-refresh" })
-const TOKEN_SWAP_URI = makeRedirectUri({ ...uriOptions, path: "spotify-swap" })
+
+const REDIRECT_URI = "music-sync://spotify-redirect"
+const TOKEN_REFRESH_URI = "music-sync://spotify-refresh"
+const TOKEN_SWAP_URI = "music-sync://spotify-swap"
 
 
 const generateRandomString = (n: number) => {
@@ -51,8 +38,9 @@ const generateRandomString = (n: number) => {
     return arr.join('');
 }
 
+
 export const SCOPES = [
-    "app-remote-control",
+    "app-remote-control", // maybe comment out if it interferes
     "playlist-modify-private",
     "playlist-read-collaborative",
     "playlist-read-private",
@@ -68,6 +56,10 @@ export const SCOPES = [
     "user-read-recently-played",
     "user-top-read"
 ]
+
+
+
+
 
 const codeRequestConfig =  ():AuthRequestConfig => {
     return({
@@ -191,7 +183,6 @@ const authFlow = async (): Promise<TokenResponse|undefined> =>{
         console.warn(e);
     }
 }
-
 
 
 export { authFlow };

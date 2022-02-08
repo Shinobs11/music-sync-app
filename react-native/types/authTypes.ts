@@ -1,4 +1,4 @@
-export interface NonSerializedTokenResponse {
+export interface SpotifyWebSession {
     "accessToken": string,
     "expiresIn": number,
     "issuedAt": number,
