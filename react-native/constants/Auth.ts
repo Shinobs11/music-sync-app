@@ -1,5 +1,5 @@
 
 export enum SessionEnum{
-     spotifyWebSession="spotify-web",
-     spotifyLocalSession="spotify-local",
+     spotifyWebSession = "spotifyWebSession",
+     spotifyLocalSession = "spotifyLocalSession"
 }

@@ -4,5 +4,6 @@ export interface SpotifyWebSession {
     "issuedAt": number,
     "refreshToken": string,
     "scope": string,
-    "tokenType": string
+    "tokenType": string,
+    "expirationDate": number
 }

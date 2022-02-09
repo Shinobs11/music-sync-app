@@ -43,7 +43,7 @@ const scopes = [
     ApiScope.UserTopReadScope,
 ]
 
-const authFlow = async():Promise<SpotifySession> =>{
+export const authFlow = async():Promise<SpotifySession> =>{
     const sess:SpotifySession = await auth.authorize(genApiConfig());
     console.log(sess);
     return sess;
