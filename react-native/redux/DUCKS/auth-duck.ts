@@ -3,10 +3,11 @@ import { isAvailableAsync, getItemAsync, SecureStoreOptions, WHEN_UNLOCKED, setI
 import { ActionSheetIOS, Platform } from 'react-native';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { TokenResponse } from "expo-auth-session";
-import { SpotifyWebSession } from '../../types/authTypes';
+import { SpotifyWebSession, AuthPlatforms, SpotifyLocalSession } from '../../types/authTypes';
 import { SpotifySession } from 'react-native-spotify-remote';
-import { SessionEnum } from '../../constants/Auth';
+import { SessionEnum, enumKeys } from '../../constants/Auth';
 import {authFlow} from "../../components/music-platforms/spotify/auth/SpotifyLocalAuth"
+import { DeepPartial } from "../../utils/TypeUtils";
 
 export { getAuthFromSecureStore, setAuthInSecureStore, deleteAuthInSecureStore };
 
@@ -64,13 +65,7 @@ const getAuthFromSecureStore = createAsyncThunk("auth/getAuthFromSecureStore",
 )
 
 // Interface in question
-export interface SpotifyLocalSession{
-    "accessToken": string,
-    "expirationDate": number,
-    "expired": boolean,
-    "refreshToken": string,
-    //TODOs: iOS scope implementation
-}
+
 
 const setAuthInSecureStore = createAsyncThunk("auth/setAuthInSecureStore", async (tokenPromise: Promise<SpotifySession> | Promise<TokenResponse>, thunkapi) => {
     const isSpotifyLocalSession = (result: SpotifySession): SpotifyLocalSession=>{  
@@ -158,22 +153,19 @@ const deleteAuthInSecureStore = createAsyncThunk("auth/deleteAuthInSecureStore",
 }
 )
 
-interface isAuthed{
-    spotifyLocalSession: boolean | undefined,
-    SpotifyWebSession: boolean | undefined
-}
+type isAuthed = DeepPartial<{
+    [property in keyof AuthPlatforms as string]: boolean
+}>
+
 interface authState {
-    isAuthed: 
+    isAuthed: isAuthed,
     authObject: Record<string, any>
 } //figure out this typescript stuff tomorrow ugh
 
 
 //init state with testType schema
 const initState = {
-    isAuthed: {
-        spotifyLocalSession: undefined,
-        SpotifyWebSession: undefined
-    },
+    isAuthed: {},
     authObject:{}
 } as authState
 
@@ -184,7 +176,7 @@ export default createReducer(initState, (builder) => {
         if (typeof action.payload === "string") {
             // console.log("putting key from secure store into state")
             state.authObject = action.payload;
-            var authed:Record<string, (boolean|undefined)> = {}
+            var authed:isAuthed = {}
             for(var x in SessionEnum){
                 if(state.authObject[x]){
                     if(state.authObject[x]["expirationDate"]>= (new Date).getTime()){
@@ -215,7 +207,7 @@ export default createReducer(initState, (builder) => {
             // console.log("putting key from action into state");
             
             if(action.payload){
-                state.authed[action.payload.type] = true;
+                state.isAuthed[action.payload.type] = true;
                 state.authObject[action.payload.type] = action.payload.payload;
             }
         })

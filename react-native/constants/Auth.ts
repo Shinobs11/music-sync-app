@@ -1,5 +1,7 @@
 
 export enum SessionEnum{
-     spotifyWebSession = "spotifyWebSession",
-     spotifyLocalSession = "spotifyLocalSession"
+     spotifyWebSession = "spotify-web",
+     spotifyLocalSession = "spotify-local"
 }
+
+export {enumKeys} from "../utils/TypeUtils";
