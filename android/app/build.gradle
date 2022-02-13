@@ -136,6 +136,7 @@ localProperties.load(new FileInputStream(rootProject.file("local.properties")));
 //AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHh
 
 android {
+
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     compileOptions {
@@ -149,7 +150,10 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0.0"
-        multiDexEnabled true
+        // multiDexEnabled true,
+        manifestPlaceholders = [
+            appAuthRedirectScheme: 'music-sync'
+        ]
     }
     splits {
         abi {

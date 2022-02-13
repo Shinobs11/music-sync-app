@@ -1,7 +1,9 @@
+import { SessionEnumType } from '../types/AuthTypes';
 
-export enum SessionEnum{
-     spotifyWebSession = "spotify-web",
-     spotifyLocalSession = "spotify-local"
-}
 
-export {enumKeys} from "../utils/TypeUtils";
+export const SessionEnum:SessionEnumType= {
+     spotifyWebSession:"spotify-web",
+     spotifyLocalSession:"spotify-local"
+} 
+
+export {enumKeys} from "../utils/Utils";

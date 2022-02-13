@@ -3,9 +3,10 @@ import { View, Platform, Button } from 'react-native';
 import { SpotifySession, remote, ContentItem} from 'react-native-spotify-remote';
 
 import axios, { AxiosRequestConfig,  AxiosResponse } from 'axios';
+import { SessionEnum } from '../../../../constants/Auth';
+import { SpotifyWebSession } from '../../../../types/AuthTypes';
 function SpotifyPlayer(props: any) {
-
-    const authObject: SpotifySession = props.authObject;
+    const authObject: SpotifyWebSession = props.authObject[SessionEnum.spotifyWebSession];
 
     
 

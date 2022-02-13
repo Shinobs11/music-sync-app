@@ -1,0 +1,78 @@
+<svg version="1.1" baseProfile="full" width="2546" height="186" viewbox="0 0 2546 186" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" style="font-weight:bold; font-size:12pt; font-family:'Calibri', Helvetica, sans-serif;;stroke-width:3;stroke-linejoin:round;stroke-linecap:round">
+<title >nomnoml</title>
+<desc >#.interface: fill=lightblue
+#.enumeration: fill=lightgreen
+[&lt;interface&gt;OAuthAuthorizationRequest|+response_type: &quot;code&quot;;+client_id: string;+redirect_uri: string;+scope: string;+code_challenge: string;+state: string|]
+[&lt;interface&gt;OAuthAuthorizationSuccessResponse|+code: string;+state: string|]
+[&lt;interface&gt;OAuthAuthorizationFailedResponse|+error: string;+state: string|]
+[&lt;interface&gt;OAuthAccessTokenRequest|+grant_type: &quot;authorization_code&quot;;+code: string;+redirect_uri: string;+client_id: string;+client_secret: string;+code_verifier: string|]
+[&lt;interface&gt;OAuthAccessTokenResponse|+access_token: string;+expires_in: number;+refresh_token: string;+token_type: &quot;Bearer&quot;|]
+[&lt;interface&gt;SpotifyWebSession|+accessToken: string;+expiresIn: number;+issuedAt: number;+refreshToken: string;+scope: string;+tokenType: string;+expirationDate: number|]
+[&lt;interface&gt;SpotifyLocalSession|+accessToken: string;+expirationDate: number;+expired: boolean;+refreshToken: string|]
+[&lt;interface&gt;AuthPlatforms|+spotifyWebSession: unknown;+spotifyLocalSession: unknown|]</desc>
+<rect x="13.5" y="21.5" height="145" width="254" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+<a id=".OAuthAuthorizationRequest" xlink:href=""><text x="140.5" y="43" style="fill: #33322E;font-weight:normal;text-anchor: middle;">OAuthAuthorizationRequest</text></a>
+<path d="M13.5 52.5 L267.5 52.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="21.5" y="74" style="fill: #33322E;font-weight:normal;">+response_type: &quot;code&quot;</text>
+<text x="21.5" y="89" style="fill: #33322E;font-weight:normal;">+client_id: string</text>
+<text x="21.5" y="104" style="fill: #33322E;font-weight:normal;">+redirect_uri: string</text>
+<text x="21.5" y="119" style="fill: #33322E;font-weight:normal;">+scope: string</text>
+<text x="21.5" y="134" style="fill: #33322E;font-weight:normal;">+code_challenge: string</text>
+<text x="21.5" y="149" style="fill: #33322E;font-weight:normal;">+state: string</text>
+<path d="M13.5 158.5 L267.5 158.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<rect x="307.5" y="51.5" height="85" width="330" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+<a id=".OAuthAuthorizationSuccessResponse" xlink:href=""><text x="472.5" y="73" style="fill: #33322E;font-weight:normal;text-anchor: middle;">OAuthAuthorizationSuccessResponse</text></a>
+<path d="M307.5 82.5 L637.5 82.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="315.5" y="104" style="fill: #33322E;font-weight:normal;">+code: string</text>
+<text x="315.5" y="119" style="fill: #33322E;font-weight:normal;">+state: string</text>
+<path d="M307.5 128.5 L637.5 128.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<rect x="677.5" y="51.5" height="85" width="320" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+<a id=".OAuthAuthorizationFailedResponse" xlink:href=""><text x="837.5" y="73" style="fill: #33322E;font-weight:normal;text-anchor: middle;">OAuthAuthorizationFailedResponse</text></a>
+<path d="M677.5 82.5 L997.5 82.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="685.5" y="104" style="fill: #33322E;font-weight:normal;">+error: string</text>
+<text x="685.5" y="119" style="fill: #33322E;font-weight:normal;">+state: string</text>
+<path d="M677.5 128.5 L997.5 128.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<rect x="1037.5" y="21.5" height="145" width="330" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+<a id=".OAuthAccessTokenRequest" xlink:href=""><text x="1202.5" y="43" style="fill: #33322E;font-weight:normal;text-anchor: middle;">OAuthAccessTokenRequest</text></a>
+<path d="M1037.5 52.5 L1367.5 52.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="1045.5" y="74" style="fill: #33322E;font-weight:normal;">+grant_type: &quot;authorization_code&quot;</text>
+<text x="1045.5" y="89" style="fill: #33322E;font-weight:normal;">+code: string</text>
+<text x="1045.5" y="104" style="fill: #33322E;font-weight:normal;">+redirect_uri: string</text>
+<text x="1045.5" y="119" style="fill: #33322E;font-weight:normal;">+client_id: string</text>
+<text x="1045.5" y="134" style="fill: #33322E;font-weight:normal;">+client_secret: string</text>
+<text x="1045.5" y="149" style="fill: #33322E;font-weight:normal;">+code_verifier: string</text>
+<path d="M1037.5 158.5 L1367.5 158.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<rect x="1407.5" y="36.5" height="115" width="244" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+<a id=".OAuthAccessTokenResponse" xlink:href=""><text x="1529.5" y="58" style="fill: #33322E;font-weight:normal;text-anchor: middle;">OAuthAccessTokenResponse</text></a>
+<path d="M1407.5 67.5 L1651.5 67.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="1415.5" y="89" style="fill: #33322E;font-weight:normal;">+access_token: string</text>
+<text x="1415.5" y="104" style="fill: #33322E;font-weight:normal;">+expires_in: number</text>
+<text x="1415.5" y="119" style="fill: #33322E;font-weight:normal;">+refresh_token: string</text>
+<text x="1415.5" y="134" style="fill: #33322E;font-weight:normal;">+token_type: &quot;Bearer&quot;</text>
+<path d="M1407.5 143.5 L1651.5 143.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<rect x="1691.5" y="13.5" height="160" width="235" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+<a id="react-native/types/authTypes.ts.SpotifyWebSession" xlink:href="react-native/types/authTypes.ts"><text x="1809" y="35" style="fill: #33322E;font-weight:normal;text-anchor: middle;">SpotifyWebSession</text></a>
+<path d="M1691.5 44.5 L1926.5 44.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="1699.5" y="66" style="fill: #33322E;font-weight:normal;">+accessToken: string</text>
+<text x="1699.5" y="81" style="fill: #33322E;font-weight:normal;">+expiresIn: number</text>
+<text x="1699.5" y="96" style="fill: #33322E;font-weight:normal;">+issuedAt: number</text>
+<text x="1699.5" y="111" style="fill: #33322E;font-weight:normal;">+refreshToken: string</text>
+<text x="1699.5" y="126" style="fill: #33322E;font-weight:normal;">+scope: string</text>
+<text x="1699.5" y="141" style="fill: #33322E;font-weight:normal;">+tokenType: string</text>
+<text x="1699.5" y="156" style="fill: #33322E;font-weight:normal;">+expirationDate: number</text>
+<path d="M1691.5 165.5 L1926.5 165.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<rect x="1966.5" y="36.5" height="115" width="235" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+<a id="react-native/types/authTypes.ts.SpotifyLocalSession" xlink:href="react-native/types/authTypes.ts"><text x="2084" y="58" style="fill: #33322E;font-weight:normal;text-anchor: middle;">SpotifyLocalSession</text></a>
+<path d="M1966.5 67.5 L2201.5 67.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="1974.5" y="89" style="fill: #33322E;font-weight:normal;">+accessToken: string</text>
+<text x="1974.5" y="104" style="fill: #33322E;font-weight:normal;">+expirationDate: number</text>
+<text x="1974.5" y="119" style="fill: #33322E;font-weight:normal;">+expired: boolean</text>
+<text x="1974.5" y="134" style="fill: #33322E;font-weight:normal;">+refreshToken: string</text>
+<path d="M1966.5 143.5 L2201.5 143.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<rect x="2241.5" y="51.5" height="85" width="292" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+<a id="react-native/types/authTypes.ts.AuthPlatforms" xlink:href="react-native/types/authTypes.ts"><text x="2387.5" y="73" style="fill: #33322E;font-weight:normal;text-anchor: middle;">AuthPlatforms</text></a>
+<path d="M2241.5 82.5 L2533.5 82.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="2249.5" y="104" style="fill: #33322E;font-weight:normal;">+spotifyWebSession: unknown</text>
+<text x="2249.5" y="119" style="fill: #33322E;font-weight:normal;">+spotifyLocalSession: unknown</text>
+<path d="M2241.5 128.5 L2533.5 128.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+</svg>

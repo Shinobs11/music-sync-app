@@ -3,32 +3,91 @@ import { isAvailableAsync, getItemAsync, SecureStoreOptions, WHEN_UNLOCKED, setI
 import { ActionSheetIOS, Platform } from 'react-native';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { TokenResponse } from "expo-auth-session";
-import { SpotifyWebSession, AuthPlatforms, SpotifyLocalSession } from '../../types/authTypes';
+import { SpotifyWebSession, SpotifyLocalSession, Session } from '../../types/AuthTypes';
 import { SpotifySession } from 'react-native-spotify-remote';
 import { SessionEnum, enumKeys } from '../../constants/Auth';
 import {authFlow} from "../../components/music-platforms/spotify/auth/SpotifyLocalAuth"
-import { DeepPartial } from "../../utils/TypeUtils";
+import { DeepPartial, filterUndefinedPromise, isEmptyObject } from "../../utils/Utils";
+import {AuthConfiguration, refresh, RefreshResult} from 'react-native-app-auth';
+import  store from '../store';
+
+
 
 export { getAuthFromSecureStore, setAuthInSecureStore, deleteAuthInSecureStore };
 
 
+const authCleanup = async (arg:Record<string,any>)=>{
+
+    const spotifyWebSessionCleanup = async () =>{
+        let obj:SpotifyWebSession = arg[SessionEnum.spotifyWebSession];
+        try{
+            const config:AuthConfiguration= {
+                issuer: "https://accounts.spotify.com/api/token",
+                clientId: "cf9eb20ddb254f6092c24e80d37317f3",
+                redirectUrl: "music-sync://spotify-refresh",
+                scopes: []
+            }
+            const res:RefreshResult = await refresh(config, {refreshToken: obj.refreshToken})
+            console.log(res.accessTokenExpirationDate);
+            //TODOS: DO the implementation steps for react-native-app-auth on iOS
+            const expirationDate =parseInt(res.accessTokenExpirationDate);
+            const newAuthObj:SpotifyWebSession = {
+                refreshToken: obj.refreshToken,
+                accessToken: res.accessToken,
+                expirationDate: expirationDate ,
+                expiresIn: 3600,
+                issuedAt: expirationDate-3600,
+                scope: obj.scope,
+                tokenType:obj.tokenType
+            }
+            return newAuthObj;
+        }
+        catch(e){
+            console.warn(e);
+        }
+        
+    }
+    const spotifyLocalSessionCleanup = () =>{
+        let obj:SpotifyLocalSession = arg[SessionEnum.spotifyLocalSession];
+        if(Date.now()>obj.expirationDate){
+            //TODOS: Is there anyway to reauth without disrupting UI?
+        }
+
+
+    }
+    //implement type guards in a switch kinda thing to call specific cleanups.
+    for(var key in SessionEnum){
+        switch(key){
+            //during cleanup webSession should refresh token and set the new token into store.
+            case SessionEnum.spotifyWebSession:{
+                const res:SpotifyWebSession = await filterUndefinedPromise(spotifyWebSessionCleanup());
+                arg = {...arg, [SessionEnum[key]]:res}
+                break;
+            }
+            case SessionEnum.spotifyLocalSession:{
+
+                break;
+            }
+            default:{
+                break;
+            }
+        }
+
+        
+    }
+
+
+
+
+}
+
 
 const getAuthFromSecureStore = createAsyncThunk("auth/getAuthFromSecureStore",
     async (arg, thunk) => {
-        var authObj:Record<string, any> = {}
-        
-        for(var x in SessionEnum){
-            
+        //TODOS: make a dedicate type later
+        var authObj:Record<string, any> = {}            
         try {
-
-            switch(x){
-                case SessionEnum.spotifyLocalSession:{
-                    thunk.dispatch(setAuthInSecureStore(authFlow()));
-                }
-            }
-                
-            
-
+            for(var x in SessionEnum){
             var key;
             if (await isAvailableAsync() === true) {
                 
@@ -39,26 +98,29 @@ const getAuthFromSecureStore = createAsyncThunk("auth/getAuthFromSecureStore",
                         //requireAuthentication? might not be good for user experience
                     }
                     {
-                        key = await getItemAsync(`music-sync-app-${x}-auth`, secureStoreOptions);
+                        key = await getItemAsync(`music-sync-app-${SessionEnum[x]}-auth`, secureStoreOptions);
                     }
                 }
                 else {
-                    key = await getItemAsync(`music-sync-app-${x}-auth`);
+                    key = await getItemAsync(`music-sync-app-${SessionEnum[x]}-auth`);
                 }
                 
             }
-            console.log("get "+`music-sync-app-${x}-auth`);
+            // console.log("get "+`music-sync-app-${SessionEnum[x]}-auth`);
             if(key!=null){
-                authObj[x] = JSON.parse(key);
+                authObj[SessionEnum[x]] = JSON.parse(key);
+            }            
+        }
+            //dispatch is a synchronous method, so 
+            authCleanup(authObj)
+            if(isEmptyObject(authObj[SessionEnum.spotifyLocalSession])){
+                await thunk.dispatch(setAuthInSecureStore(authFlow() as Promise<SpotifyLocalSession>));
             }
-            
-            
-
         }
         catch (e) {
             console.warn(e);
         }
-    }
+    
     console.log(authObj, "hello");
     return authObj;
     }
@@ -66,17 +128,12 @@ const getAuthFromSecureStore = createAsyncThunk("auth/getAuthFromSecureStore",
 
 // Interface in question
 
-
-const setAuthInSecureStore = createAsyncThunk("auth/setAuthInSecureStore", async (tokenPromise: Promise<SpotifySession> | Promise<TokenResponse>, thunkapi) => {
-    const isSpotifyLocalSession = (result: SpotifySession): SpotifyLocalSession=>{  
-        let substrStart = result.expirationDate.indexOf("time=") + 5;
-        let substrEnd = result.expirationDate.indexOf(",", substrStart);
-        let expirationDate = parseInt(result.expirationDate.substring(substrStart, substrEnd))
-    
+//TODOS refactor so TokenResponse isn't used
+const setAuthInSecureStore = createAsyncThunk("auth/setAuthInSecureStore", async (tokenPromise: Promise<Session> | Promise<TokenResponse>, thunkapi) => {
+    const isSpotifyLocalSession = (result: SpotifyLocalSession): SpotifyLocalSession=>{  
         const authSess:SpotifyLocalSession = {
             accessToken: result.accessToken,
-            expirationDate: expirationDate,
-            expired: (new Date().getUTCMilliseconds()) >= expirationDate ? true: false,
+            expirationDate: result.expirationDate,
             refreshToken: result.refreshToken
         }
         return authSess;
@@ -95,19 +152,20 @@ const setAuthInSecureStore = createAsyncThunk("auth/setAuthInSecureStore", async
         return authSess;
     }
 
-    const processResult = (result: TokenResponse|SpotifySession) =>{
+    const processResult = (result: TokenResponse|SpotifyLocalSession) =>{
         if("issuedAt" in result){
             return {type:SessionEnum.spotifyWebSession, payload:isSpotifyWebSession(result as TokenResponse)}
         }
         else{
-            return {payload: isSpotifyLocalSession(result as SpotifySession), type:SessionEnum.spotifyLocalSession}
+            return {payload: isSpotifyLocalSession({...result, scope: undefined }as SpotifyLocalSession), type:SessionEnum.spotifyLocalSession}
         }
     }
     
     try {
-        
-
         var result = (await tokenPromise);
+        if(result === undefined){
+            return null;
+        }
         var authSess = processResult(result);
 
 
@@ -153,20 +211,27 @@ const deleteAuthInSecureStore = createAsyncThunk("auth/deleteAuthInSecureStore",
 }
 )
 
-type isAuthed = DeepPartial<{
-    [property in keyof AuthPlatforms as string]: boolean
-}>
+type authRecord = {
+    [index:string]:any
+}
 
 interface authState {
-    isAuthed: isAuthed,
-    authObject: Record<string, any>
+    isAuthed: authRecord,
+    authObject: authRecord
 } //figure out this typescript stuff tomorrow ugh
 
 
-//init state with testType schema
+// //init state with testType schema
+const instantiateState = () =>{
+    var obj:Record<string, any> = {}
+    for(const key in SessionEnum){
+        obj[SessionEnum[key as string]]
+    }
+    return obj;
+}
 const initState = {
-    isAuthed: {},
-    authObject:{}
+    isAuthed: instantiateState(),
+    authObject: instantiateState()
 } as authState
 
 
@@ -176,23 +241,23 @@ export default createReducer(initState, (builder) => {
         if (typeof action.payload === "string") {
             // console.log("putting key from secure store into state")
             state.authObject = action.payload;
-            var authed:isAuthed = {}
+            var authed:authRecord = {}
             for(var x in SessionEnum){
-                if(state.authObject[x]){
-                    if(state.authObject[x]["expirationDate"]>= (new Date).getTime()){
-                        if(state.authObject[x]["accessToken"]){
-                            authed[x] = true;
+                if(state.authObject[SessionEnum[x]]){
+                    if(state.authObject[SessionEnum[x]]["expirationDate"]>= (new Date).getTime()){
+                        if(state.authObject[SessionEnum[x]]["accessToken"]){
+                            authed[SessionEnum[x]] = true;
                         }
                         else{
-                            authed[x] = false;
+                            authed[SessionEnum[x]] = false;
                         }
                     }
                     else{
-                        authed[x] = false;
+                        authed[SessionEnum[x]] = false;
                     }
                 }
                 else{
-                    authed[x] = false;
+                    authed[SessionEnum[x]] = false;
                 }
             }
             state.isAuthed = authed;

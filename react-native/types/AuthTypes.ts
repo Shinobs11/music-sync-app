@@ -1,4 +1,5 @@
 export interface SpotifyWebSession {
+    [index:string]:any
     "accessToken": string,
     "expiresIn": number,
     "issuedAt": number,
@@ -9,15 +10,15 @@ export interface SpotifyWebSession {
 }
 
 export interface SpotifyLocalSession{
+    [index:string]:any
     "accessToken": string,
     "expirationDate": number,
-    "expired": boolean,
-    "refreshToken": string,
     //TODOs: iOS scope implementation
 }
-
+export type Session = SpotifyLocalSession | SpotifyWebSession;
 //UPDATE ON ADDITIONAL PLATFORM
-export interface AuthPlatforms{
-    spotifyWebSession: unknown,
-    spotifyLocalSession: unknown,
+export interface SessionEnumType{
+    [index:string]: string
+    "spotifyWebSession": string,
+    "spotifyLocalSession": string
 }

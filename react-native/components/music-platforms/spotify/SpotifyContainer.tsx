@@ -25,7 +25,7 @@ function SpotifyContainer(props: Props) {
         const onPress = () =>{
             setAuthInSecureStore(authFlow() as Promise<TokenResponse>);
         }
-        if (!isAuthed) {
+        if (!isAuthed[SessionEnum.spotifyWebSession]) {
             return (
                 <>
                     <Button
@@ -43,7 +43,7 @@ function SpotifyContainer(props: Props) {
                 {AuthButton()}
                 <Button onPress={()=>{console.log(authObject)}} title="Log Auth object"/>
                 <Button onPress={()=>{deleteAuthInSecureStore()}} title="Test delete function/Test get"/>
-                <SpotifyPlayer authObject={authObject as Record<string, any>[SessionEnum.spotifyLocalSession]}/>
+                <SpotifyPlayer authObject={authObject}/>
             </View>
         </>
     )

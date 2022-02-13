@@ -14,3 +14,18 @@ export type DeepPartial<T> = T extends object ? {
 }
 
 
+export function isEmptyObject(obj:Object) {
+    return Object.keys(obj).length === 0 && obj.constructor === Object;
+  }
+
+
+export async function filterUndefinedPromise(prom:Promise<any|undefined>):Promise<any>{
+    var res = await prom;
+    return new Promise<any>((resolve, reject)=>{
+        if(typeof res === undefined){
+            resolve(res);
+        }else{
+            reject();
+        }
+    })
+}

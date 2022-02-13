@@ -1,5 +1,6 @@
 
 import { auth, ApiScope, ApiConfig, SpotifySession } from 'react-native-spotify-remote';
+import { SpotifyLocalSession } from '../../../../types/AuthTypes';
 
 
 //TODO: Generally ill-advised to hardcode client-id, remove later.
@@ -43,8 +44,13 @@ const scopes = [
     ApiScope.UserTopReadScope,
 ]
 
-export const authFlow = async():Promise<SpotifySession> =>{
+export const authFlow = async():Promise<SpotifyLocalSession> =>{
     const sess:SpotifySession = await auth.authorize(genApiConfig());
-    console.log(sess);
-    return sess;
+    let substrStart = sess.expirationDate.indexOf("time=") + 5;
+    let substrEnd = sess.expirationDate.indexOf(",", substrStart);
+    let expirationDate = parseInt(sess.expirationDate.substring(substrStart, substrEnd))
+    return {
+        accessToken:sess.accessToken,
+        expirationDate: expirationDate
+    };
 }

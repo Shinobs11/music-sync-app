@@ -1,0 +1,5 @@
+{
+    "glob": "./react-native/types/*",
+    "modifiers": false,
+    "nomnoml":["#arrowSize: 1.5","#.interface: fill=#8f8 dashed"]
+}
