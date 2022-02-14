@@ -3,7 +3,7 @@ import { isAvailableAsync, getItemAsync, SecureStoreOptions, WHEN_UNLOCKED, setI
 import { ActionSheetIOS, Platform } from 'react-native';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { TokenResponse } from "expo-auth-session";
-import { SpotifyWebSession, SpotifyLocalSession, Session } from '../../types/AuthTypes';
+import { SpotifyWebSession, SpotifyLocalSession, Session, SessionEnumType } from '../../types/AuthTypes';
 import { SpotifySession } from 'react-native-spotify-remote';
 import { SessionEnum, enumKeys } from '../../constants/Auth';
 import {authFlow} from "../../components/music-platforms/spotify/auth/SpotifyLocalAuth"
@@ -114,14 +114,12 @@ const getAuthFromSecureStore = createAsyncThunk("auth/getAuthFromSecureStore",
             //dispatch is a synchronous method, so 
             authCleanup(authObj)
             if(isEmptyObject(authObj[SessionEnum.spotifyLocalSession])){
-                await thunk.dispatch(setAuthInSecureStore(authFlow() as Promise<SpotifyLocalSession>));
+                await thunk.dispatch(setAuthInSecureStore({type: SessionEnum.spotifyLocalSession, payload: authFlow() as Promise<SpotifyLocalSession>}));
             }
         }
         catch (e) {
             console.warn(e);
         }
-    
-    console.log(authObj, "hello");
     return authObj;
     }
 )
@@ -129,44 +127,12 @@ const getAuthFromSecureStore = createAsyncThunk("auth/getAuthFromSecureStore",
 // Interface in question
 
 //TODOS refactor so TokenResponse isn't used
-const setAuthInSecureStore = createAsyncThunk("auth/setAuthInSecureStore", async (tokenPromise: Promise<Session> | Promise<TokenResponse>, thunkapi) => {
-    const isSpotifyLocalSession = (result: SpotifyLocalSession): SpotifyLocalSession=>{  
-        const authSess:SpotifyLocalSession = {
-            accessToken: result.accessToken,
-            expirationDate: result.expirationDate,
-            refreshToken: result.refreshToken
-        }
-        return authSess;
-    }
-
-    const isSpotifyWebSession = (result: TokenResponse): SpotifyWebSession=>{
-        const authSess:SpotifyWebSession = {
-            accessToken: result.accessToken,
-            expiresIn: 3600,
-            issuedAt: result.issuedAt,
-            refreshToken: result.refreshToken as string,
-            scope: result.scope ? result.scope : "",
-            tokenType: result.tokenType,
-            expirationDate: (3600+result.issuedAt)*1000
-        }
-        return authSess;
-    }
-
-    const processResult = (result: TokenResponse|SpotifyLocalSession) =>{
-        if("issuedAt" in result){
-            return {type:SessionEnum.spotifyWebSession, payload:isSpotifyWebSession(result as TokenResponse)}
-        }
-        else{
-            return {payload: isSpotifyLocalSession({...result, scope: undefined }as SpotifyLocalSession), type:SessionEnum.spotifyLocalSession}
-        }
-    }
+const setAuthInSecureStore = createAsyncThunk("auth/setAuthInSecureStore", async (data:{payload: Promise<Session>, type: string}, thunkapi) => {
+    const authType = data.type;
+    const promise = data.payload;
     
     try {
-        var result = (await tokenPromise);
-        if(result === undefined){
-            return null;
-        }
-        var authSess = processResult(result);
+        var authSess:Session = await promise;
 
 
         if (await isAvailableAsync() === true) {
@@ -174,16 +140,16 @@ const setAuthInSecureStore = createAsyncThunk("auth/setAuthInSecureStore", async
                 const secureStoreOptions: SecureStoreOptions = {
                     keychainAccessible: WHEN_UNLOCKED
                 }
-                setItemAsync(`music-sync-app-${authSess.type}-auth`, JSON.stringify(authSess.payload), secureStoreOptions);
+                setItemAsync(`music-sync-app-${authType}-auth`, JSON.stringify(authType), secureStoreOptions);
             }
             else {
                 // console.log("Sending key to secure store")
 
-                setItemAsync(`music-sync-app-${authSess.type}-auth`, JSON.stringify(authSess.payload));
+                setItemAsync(`music-sync-app-${authType}-auth`, JSON.stringify(authType));
 
             }
         }
-        return authSess;
+        return {authSess, authType} as {[index:string]:any};
     }
     catch (e) {
         console.warn(e);
@@ -272,8 +238,8 @@ export default createReducer(initState, (builder) => {
             // console.log("putting key from action into state");
             
             if(action.payload){
-                state.isAuthed[action.payload.type] = true;
-                state.authObject[action.payload.type] = action.payload.payload;
+                state.isAuthed[action.payload.authType] = true;
+                state.authObject[action.payload.authType] = action.payload.payload;
             }
         })
 })

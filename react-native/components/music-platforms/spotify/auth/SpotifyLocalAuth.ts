@@ -1,10 +1,9 @@
 
 import { auth, ApiScope, ApiConfig, SpotifySession } from 'react-native-spotify-remote';
 import { SpotifyLocalSession } from '../../../../types/AuthTypes';
+import {spotify} from "../../../../../env.json";
 
-
-//TODO: Generally ill-advised to hardcode client-id, remove later.
-const CLIENT_ID = "cf9eb20ddb254f6092c24e80d37317f3"
+const CLIENT_ID = spotify.CLIENT_ID
 
 
 const REDIRECT_URI = "music-sync://spotify-redirect"
