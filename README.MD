@@ -1,2 +1,2 @@
 # music-sync-app
-Some proof-of-concepts for a future project.
+Currently developing UI for app, will continue after the meat of that is finished.
