@@ -6,8 +6,8 @@
 
 import { LinkingOptions } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
-
-import { RootStackParamList } from '../../types';
+import {ContentScreens} from '../constants/ContentConstants'
+import { RootStackParamList } from '../types/NavigationTypes';
 
 const linking: LinkingOptions<RootStackParamList> = {
   prefixes: ["music-sync://"],
@@ -15,20 +15,24 @@ const linking: LinkingOptions<RootStackParamList> = {
     screens: {
       Root: {
         screens: {
-          TabOne: {
+          Home: {
             screens: {
-              TabOneScreen: 'spotify-redirect',
+              HomeScreen: 'home',
             },
           },
-          TabTwo: {
+          Library: {
             screens: {
-              TabTwoScreen: 'two',
+              LibraryScreen: 'library',
             },
           },
         },
       },
-      Modal: 'modal',
       NotFound: '*',
+      [ContentScreens.playlist]: ContentScreens.playlist,
+      [ContentScreens.album]: ContentScreens.album,
+      [ContentScreens.artist]: ContentScreens.artist,
+      [ContentScreens.playlistList]: ContentScreens.playlistList,
+      DevTestScreen: 'spotify-redirect',
     },
   },
 };

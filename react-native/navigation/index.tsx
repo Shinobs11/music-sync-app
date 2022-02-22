@@ -9,16 +9,17 @@ import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { ColorSchemeName, Pressable } from 'react-native';
-
+import HomeScreen from '../screens/HomeScreen';
+import LibraryScreen from '../screens/LibraryScreen';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../../types';
+import DevTestScreen from '../screens/DevTestScreen';
+import { ContentScreens, ContentTypes } from '../constants/ContentConstants';
+import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types/NavigationTypes';
 import LinkingConfiguration from './LinkingConfiguration';
-
+import PlaylistScreen from '../screens/PlaylistScreen';
+import PlaylistListScreen from '../screens/PlaylistListScreen';
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
     <NavigationContainer
@@ -40,9 +41,11 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
-      </Stack.Group>
+       {/* <Stack.Screen name={ContentTypes.album} component={AlbumScreen}/>
+      <Stack.Screen name={ContentTypes.artist} component={ArtistScreen}/> */}
+      <Stack.Screen name={ContentScreens.playlist} component={PlaylistScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={ContentScreens.playlistList} component={PlaylistListScreen} options={{headerShown:false}}/>
+      <Stack.Screen name={"DevTestScreen"} component={DevTestScreen}/>
     </Stack.Navigator>
   );
 }
@@ -51,50 +54,37 @@ function RootNavigator() {
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
  * https://reactnavigation.org/docs/bottom-tab-navigator
  */
-const BottomTab = createBottomTabNavigator<RootTabParamList>();
+ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
-function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
-
-  return (
-    <BottomTab.Navigator
-      initialRouteName="TabOne"
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
-      }}>
-      <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Modal')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}>
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
-        })}
-      />
-      <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
-        options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
-    </BottomTab.Navigator>
-  );
-}
+ function BottomTabNavigator() {
+   const colorScheme = useColorScheme();
+ 
+   return (
+     <BottomTab.Navigator
+       initialRouteName="Home"
+       screenOptions={{
+         tabBarActiveTintColor: Colors[colorScheme].tint,
+       }}>
+       <BottomTab.Screen
+         name="Home"
+         component={HomeScreen}
+         options={({ navigation }: RootTabScreenProps<'Home'>) => ({
+           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+           headerShown: false
+         })}
+       />
+       <BottomTab.Screen
+         name="Library"
+         component={LibraryScreen}
+         options={{
+           title: 'Library',
+           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+           headerShown: false
+         }}
+       />
+     </BottomTab.Navigator>
+   );
+ }
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/

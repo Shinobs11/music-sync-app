@@ -3,20 +3,10 @@ import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit';
 import mainReducer from './DUCKS/main-duck';
 import authReducer from './DUCKS/auth-duck';
-import { TokenResponse } from 'expo-auth-session';
+
 
 //just trying to keep track of the structure, dont know if i'll actually use this.
 //TODOS update later please for the love of god
-interface stateSchema {
-    main: {
-        test: number
-    },
-    auth:{
-        isAuthed: boolean | undefined,
-        authObject?: TokenResponse
-    }
-}
-
 
 
 

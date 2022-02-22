@@ -2,7 +2,6 @@ import { createReducer, createAction } from "@reduxjs/toolkit"
 import { isAvailableAsync, getItemAsync, SecureStoreOptions, WHEN_UNLOCKED, setItemAsync, deleteItemAsync } from 'expo-secure-store';
 import { ActionSheetIOS, Platform } from 'react-native';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { TokenResponse } from "expo-auth-session";
 import { SpotifyWebSession, SpotifyLocalSession, Session, SessionEnumType } from '../../types/AuthTypes';
 import { SpotifySession } from 'react-native-spotify-remote';
 import { SessionEnum, enumKeys } from '../../constants/Auth';
@@ -17,18 +16,19 @@ export { getAuthFromSecureStore, setAuthInSecureStore, deleteAuthInSecureStore }
 
 
 const authCleanup = async (arg:Record<string,any>)=>{
-
+    
     const spotifyWebSessionCleanup = async () =>{
-        let obj:SpotifyWebSession = arg[SessionEnum.spotifyWebSession];
+        
+        const obj:SpotifyWebSession = arg[SessionEnum.spotifyWebSession];
         try{
             const config:AuthConfiguration= {
                 issuer: "https://accounts.spotify.com/api/token",
                 clientId: "cf9eb20ddb254f6092c24e80d37317f3",
-                redirectUrl: "music-sync://spotify-refresh",
+                redirectUrl: "music-sync://home",
                 scopes: []
             }
             const res:RefreshResult = await refresh(config, {refreshToken: obj.refreshToken})
-            console.log(res.accessTokenExpirationDate);
+            
             //TODOS: DO the implementation steps for react-native-app-auth on iOS
             const expirationDate =parseInt(res.accessTokenExpirationDate);
             const newAuthObj:SpotifyWebSession = {
@@ -48,7 +48,7 @@ const authCleanup = async (arg:Record<string,any>)=>{
         
     }
     const spotifyLocalSessionCleanup = () =>{
-        let obj:SpotifyLocalSession = arg[SessionEnum.spotifyLocalSession];
+        const obj:SpotifyLocalSession = arg[SessionEnum.spotifyLocalSession];
         if(Date.now()>obj.expirationDate){
             //TODOS: Is there anyway to reauth without disrupting UI?
         }
@@ -56,10 +56,11 @@ const authCleanup = async (arg:Record<string,any>)=>{
 
     }
     //implement type guards in a switch kinda thing to call specific cleanups.
-    for(var key in SessionEnum){
+    for(const key in SessionEnum){
         switch(key){
             //during cleanup webSession should refresh token and set the new token into store.
             case SessionEnum.spotifyWebSession:{
+                console.log("spotifyWebSession case entered")
                 const res:SpotifyWebSession = await filterUndefinedPromise(spotifyWebSessionCleanup());
                 arg = {...arg, [SessionEnum[key]]:res}
                 break;
@@ -85,10 +86,10 @@ const authCleanup = async (arg:Record<string,any>)=>{
 const getAuthFromSecureStore = createAsyncThunk("auth/getAuthFromSecureStore",
     async (arg, thunk) => {
         //TODOS: make a dedicate type later
-        var authObj:Record<string, any> = {}            
+        const authObj:Record<string, any> = {}            
         try {
-            for(var x in SessionEnum){
-            var key;
+            for(const x in SessionEnum){
+            let key;
             if (await isAvailableAsync() === true) {
                 
                 if (Platform.OS == "ios") {
@@ -107,7 +108,7 @@ const getAuthFromSecureStore = createAsyncThunk("auth/getAuthFromSecureStore",
                 
             }
             // console.log("get "+`music-sync-app-${SessionEnum[x]}-auth`);
-            if(key!=null){
+            if(key!=undefined){
                 authObj[SessionEnum[x]] = JSON.parse(key);
             }            
         }
@@ -132,7 +133,7 @@ const setAuthInSecureStore = createAsyncThunk("auth/setAuthInSecureStore", async
     const promise = data.payload;
     
     try {
-        var authSess:Session = await promise;
+        let authSess:Session = await promise;
 
 
         if (await isAvailableAsync() === true) {

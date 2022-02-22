@@ -29,9 +29,9 @@ export const SCOPES = [
 
 
 
-const REDIRECT_URI = "music-sync://spotify-redirect"
-const TOKEN_REFRESH_URI = "music-sync://spotify-refresh"
-const TOKEN_SWAP_URI = "music-sync://spotify-swap"
+const REDIRECT_URI = "music-sync://home"
+const TOKEN_REFRESH_URI = "music-sync://home"
+const TOKEN_SWAP_URI = "music-sync://home"
 
 
 const CLIENT_ID = spotify.CLIENT_ID
@@ -42,7 +42,7 @@ const config:AuthConfiguration = {
     scopes: SCOPES,
     redirectUrl: REDIRECT_URI,
     usePKCE: true,
-    warmAndPrefetchChrome: true,
+    warmAndPrefetchChrome: false,
     skipCodeExchange: false, // TODOS: IMplement server-side code exchange
     clientId:CLIENT_ID,
     clientSecret:CLIENT_SECRET,
