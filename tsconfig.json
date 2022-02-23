@@ -12,7 +12,7 @@
       "resolveJsonModule": true,
       "target": "ESNext",
       "strict": true,
-      "typeRoots": ["./node_modules/@types", "./node_modules/react-native-app-auth"]
+      "typeRoots": ["./node_modules/@types", "./node_modules/react-native-app-auth", "./node_modules/redux"]
     },
     "exclude": [ "babel.config.js", "metro.config.js", "jest.config.js"]
   }

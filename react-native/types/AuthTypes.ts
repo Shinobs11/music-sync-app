@@ -23,12 +23,32 @@ export interface GoogleSession{
     "tokenType": string,
     "expirationDate": number
 }
-
-export type Session = SpotifyLocalSession | SpotifyWebSession | GoogleSession;
-//UPDATE ON ADDITIONAL PLATFORM
 export interface SessionEnumType{
     [index:string]: string
     "spotifyWebSession": string,
     "spotifyLocalSession": string,
     "googleSession": string
+}
+
+export type Session = SpotifyLocalSession | SpotifyWebSession | GoogleSession;
+export interface SessionObjectState{
+    [index:string]: Object | undefined
+    "spotifyWebSession": SpotifyWebSession | undefined;
+    "spotifyLocalSession": SpotifyLocalSession | undefined;
+    "googleSession": GoogleSession | undefined;
+}
+export interface SessionIsAuthedState{
+    [index:string]: boolean | undefined
+    "spotifyWebSession": boolean | undefined;
+    "spotifyLocalSession": boolean | undefined;
+    "googleSession": boolean | undefined
+}
+//UPDATE ON ADDITIONAL PLATFORM
+
+export interface AuthActionCreatorEnumType{
+    [index:string]: string,
+    updateAuthState:string,
+    getAuthFromSecureStore:string,
+    setAuthInSecureStore:string,
+    deleteAuthInSecureStore:string
 }
