@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { StyleSheet, View, Animated } from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
+
 import { Text } from '../components/Themed';
 import testPlaylistData from '../../test-data/playlists.json'
 import { RootTabScreenProps } from '../types/NavigationTypes';

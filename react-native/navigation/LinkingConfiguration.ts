@@ -10,7 +10,7 @@ import {ContentScreens} from '../constants/ContentConstants'
 import { RootStackParamList } from '../types/NavigationTypes';
 
 const linking: LinkingOptions<RootStackParamList> = {
-  prefixes: ["music-sync://"],
+  prefixes: ["music-sync://", "music-sync-auth://"],
   config: {
     screens: {
       Root: {
@@ -32,7 +32,7 @@ const linking: LinkingOptions<RootStackParamList> = {
       [ContentScreens.album]: ContentScreens.album,
       [ContentScreens.artist]: ContentScreens.artist,
       [ContentScreens.playlistList]: ContentScreens.playlistList,
-      DevTestScreen: 'spotify-redirect',
+      [ContentScreens.devTestScreen]: ContentScreens.devTestScreen
     },
   },
 };

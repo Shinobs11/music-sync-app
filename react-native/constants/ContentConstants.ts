@@ -13,6 +13,7 @@ export const ContentScreens = {
     albumList:"albumList",
     artistList:"artistList",
     recentlyPlayed:"recentlyPlayed",
-    likedSongs:"likedSongs"
+    likedSongs:"likedSongs",
+    devTestScreen:"devTestScreen"
 
 }

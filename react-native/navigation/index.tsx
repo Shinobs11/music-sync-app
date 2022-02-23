@@ -45,7 +45,7 @@ function RootNavigator() {
       <Stack.Screen name={ContentTypes.artist} component={ArtistScreen}/> */}
       <Stack.Screen name={ContentScreens.playlist} component={PlaylistScreen} options={{ headerShown: false }} />
       <Stack.Screen name={ContentScreens.playlistList} component={PlaylistListScreen} options={{headerShown:false}}/>
-      <Stack.Screen name={"DevTestScreen"} component={DevTestScreen}/>
+      <Stack.Screen name={ContentScreens.devTestScreen} component={DevTestScreen}/>
     </Stack.Navigator>
   );
 }

@@ -6,9 +6,10 @@ import {spotify} from "../../../../../env.json";
 const CLIENT_ID = spotify.CLIENT_ID
 
 
-const REDIRECT_URI = "music-sync://home"
-const TOKEN_REFRESH_URI = "music-sync://home"
-const TOKEN_SWAP_URI = "music-sync://home"
+
+const REDIRECT_URI = "com.music.sync.auth://spotify-redirect"
+const TOKEN_REFRESH_URI = "com.music.sync.auth://spotify-refresh"
+const TOKEN_SWAP_URI = "com.music.sync.auth://spotify-swap"
 
 const genApiConfig = ():ApiConfig =>{
     const conf:ApiConfig = {

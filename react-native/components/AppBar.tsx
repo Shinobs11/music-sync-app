@@ -60,7 +60,8 @@ const AppBar = (props: PropType) => {
             maxHeight: 80
         },
         textView: {
-            alignItems: "center"
+            alignItems: "center",
+            flexDirection:"row"
         },
         text: {
             color: colors.text,
@@ -72,6 +73,9 @@ const AppBar = (props: PropType) => {
         },
         rightButtonsStyle: {
             paddingHorizontal: 4
+        },
+        backButtonStyle: {
+            paddingRight: 4
         }
 
     })
@@ -81,7 +85,7 @@ const AppBar = (props: PropType) => {
             nav.goBack();
         }
         return (
-            <TouchableOpacity onPress={backNav}>
+            <TouchableOpacity style={s.backButtonStyle} onPress={backNav}>
                 <Ionicons name="arrow-back" size={30} color={colors.text} />
             </TouchableOpacity>
         )
@@ -124,7 +128,7 @@ const AppBar = (props: PropType) => {
                         <MaterialIcons style={s.rightButtonsStyle} name="favorite" size={30} color={colors.text} />
                     </TouchableOpacity>
 
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={()=>{navigation.navigate("devTestScreen")}}>
                         <MaterialIcons style={s.rightButtonsStyle} name="settings" size={30} color={colors.text} />
                     </TouchableOpacity>
                 </View>

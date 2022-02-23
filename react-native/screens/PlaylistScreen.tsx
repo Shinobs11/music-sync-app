@@ -4,7 +4,6 @@
 
 import { Animated, Platform, StyleSheet } from 'react-native';
 import { RootStackScreenProps, PlaylistScreenRouteParams } from '../types/NavigationTypes';
-import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import React, { useRef } from 'react';
 import AppBar from '../components/AppBar';

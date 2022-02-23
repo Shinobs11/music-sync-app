@@ -14,9 +14,15 @@ import  store from '../store';
 
 export { getAuthFromSecureStore, setAuthInSecureStore, deleteAuthInSecureStore };
 
-
+const instantiateState = () =>{
+    var obj:Record<string, any> = {}
+    for(const key in SessionEnum){
+        obj[SessionEnum[key as string]]
+    }
+    return obj;
+}
 const authCleanup = async (arg:Record<string,any>)=>{
-    
+    console.log("Auth cleanup entered")
     const spotifyWebSessionCleanup = async () =>{
         
         const obj:SpotifyWebSession = arg[SessionEnum.spotifyWebSession];
@@ -86,7 +92,7 @@ const authCleanup = async (arg:Record<string,any>)=>{
 const getAuthFromSecureStore = createAsyncThunk("auth/getAuthFromSecureStore",
     async (arg, thunk) => {
         //TODOS: make a dedicate type later
-        const authObj:Record<string, any> = {}            
+        const authObj:Record<string, any> = instantiateState()           
         try {
             for(const x in SessionEnum){
             let key;
@@ -104,13 +110,16 @@ const getAuthFromSecureStore = createAsyncThunk("auth/getAuthFromSecureStore",
                 }
                 else {
                     key = await getItemAsync(`music-sync-app-${SessionEnum[x]}-auth`);
+                    console.log("Pulled key" + key + "from secure store")
                 }
                 
             }
             // console.log("get "+`music-sync-app-${SessionEnum[x]}-auth`);
             if(key!=undefined){
                 authObj[SessionEnum[x]] = JSON.parse(key);
-            }            
+                // console.log(authObj[SessionEnum[x]])
+            } 
+                       
         }
             //dispatch is a synchronous method, so 
             authCleanup(authObj)
@@ -141,13 +150,13 @@ const setAuthInSecureStore = createAsyncThunk("auth/setAuthInSecureStore", async
                 const secureStoreOptions: SecureStoreOptions = {
                     keychainAccessible: WHEN_UNLOCKED
                 }
-                setItemAsync(`music-sync-app-${authType}-auth`, JSON.stringify(authType), secureStoreOptions);
+                setItemAsync(`music-sync-app-${authType}-auth`, JSON.stringify(authSess), secureStoreOptions);
             }
             else {
-                // console.log("Sending key to secure store")
+                console.log("Sending key " + authSess.accessToken +" to secure store")
 
-                setItemAsync(`music-sync-app-${authType}-auth`, JSON.stringify(authType));
-
+                setItemAsync(`music-sync-app-${authType}-auth`, JSON.stringify(authSess));
+                // console.log(authType)
             }
         }
         return {authSess, authType} as {[index:string]:any};
@@ -189,19 +198,13 @@ interface authState {
 
 
 // //init state with testType schema
-const instantiateState = () =>{
-    var obj:Record<string, any> = {}
-    for(const key in SessionEnum){
-        obj[SessionEnum[key as string]]
-    }
-    return obj;
-}
+
 const initState = {
     isAuthed: instantiateState(),
     authObject: instantiateState()
 } as authState
 
-
+//TODOS: for tomorrow CLEANUP WHATEVER IS GOING ON IN THIS REDUCER THAT I MADE TWO WEEKS AGO
 //export and construct reducer given initState and testaction
 export default createReducer(initState, (builder) => {
     builder.addCase(getAuthFromSecureStore.fulfilled, (state, action) => {
@@ -240,7 +243,7 @@ export default createReducer(initState, (builder) => {
             
             if(action.payload){
                 state.isAuthed[action.payload.authType] = true;
-                state.authObject[action.payload.authType] = action.payload.payload;
+                state.authObject[action.payload.authType] = action.payload;
             }
         })
 })

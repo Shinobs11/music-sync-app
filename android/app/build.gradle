@@ -152,7 +152,7 @@ android {
         versionName "1.0.0"
         // multiDexEnabled true,
         manifestPlaceholders = [
-            appAuthRedirectScheme: 'music-sync'
+            appAuthRedirectScheme: 'com.music.sync.auth'
         ]
     }
     splits {
