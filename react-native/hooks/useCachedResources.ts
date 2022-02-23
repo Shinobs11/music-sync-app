@@ -1,6 +1,6 @@
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
-import { getAuthFromSecureStore } from '../redux/DUCKS/auth-duck';
+import { getAuthFromSecureStore, authCleanup } from '../redux/DUCKS/auth-duck';
 import store from '../redux/store';
 
 
@@ -20,7 +20,7 @@ export default function useCachedResources() {
         //   'space-mono': require('../assets/fonts/SpaceMono-Regular.ttf'),
         // });
         //grab key from SecureStore(Coule be used for sessions and for authentication)
-    
+        await authCleanup();
         store.dispatch(getAuthFromSecureStore());
         
         
