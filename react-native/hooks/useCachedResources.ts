@@ -20,8 +20,8 @@ export default function useCachedResources() {
         //   'space-mono': require('../assets/fonts/SpaceMono-Regular.ttf'),
         // });
         //grab key from SecureStore(Coule be used for sessions and for authentication)
-        await authCleanup();
-        store.dispatch(getAuthFromSecureStore());
+        
+
         
         
 

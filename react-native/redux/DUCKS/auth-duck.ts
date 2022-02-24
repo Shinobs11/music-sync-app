@@ -22,7 +22,7 @@ const authActionCreatorEnum:AuthActionCreatorEnumType = {
 }
 
 
-const instantiateState = <T extends Record<string, any>>() =>{
+export const instantiateState = <T extends Record<string, any>>() =>{
     var obj:{[index:string]:any|undefined} = {};
     for(const key in SessionEnum){
         obj[SessionEnum[key as string]] = undefined
@@ -39,9 +39,12 @@ const instantiateState = <T extends Record<string, any>>() =>{
 // TODOS: Hydrate redux store on startup and include authCleanup in the process of hydration.
 // AuthCleanup should only need to run once per instance of the app, or maybe after a timer too since token life is fairly short.
 //!!!!
-export const authCleanup = async (authObject:Record<string,any>):Promise<void>=>{
+export const authCleanup = async (authState:AuthState):Promise<AuthState>=>{
     const spotifyWebSessionCleanup = async () =>{
-        const obj:SpotifyWebSession = authObject[SessionEnum.spotifyWebSession];
+        const obj:SpotifyWebSession|undefined = authState.authObject.spotifyWebSession;
+        if(obj === undefined){
+            return undefined;
+        }
         try{
             const config:AuthConfiguration= {
                 issuer: "https://accounts.spotify.com/api/token",
@@ -71,18 +74,20 @@ export const authCleanup = async (authObject:Record<string,any>):Promise<void>=>
     }
     
     
-    let authPromiseObject:SessionObjectState = instantiateState();
+    let refreshedAuthObject:SessionObjectState = instantiateState<SessionObjectState>();
+    let refreshedIsAuthedObject:SessionIsAuthedState = instantiateState<SessionIsAuthedState>();
     for(const key in SessionEnum){
         switch(key){
             case SessionEnum.spotifyWebSession:{
-                const res:Promise<SpotifyWebSession | undefined> = spotifyWebSessionCleanup();
-                store.dispatch(setAuthInSecureStore({payload:res, type: SessionEnum[key]}));
-                authPromiseObject = {...authPromiseObject, [SessionEnum[key]]: await res}
+                const res:SpotifyWebSession|undefined =  await spotifyWebSessionCleanup();
+                refreshedAuthObject = {...refreshedAuthObject, [SessionEnum[key]]: res}
+                refreshedIsAuthedObject = {...refreshedIsAuthedObject, [SessionEnum[key]]: res ? true:false}
                 break;
             }
             case SessionEnum.spotifyLocalSession:{
-                const res = authFlow() as Promise<SpotifyLocalSession>
-                authPromiseObject = {...authPromiseObject, [SessionEnum[key]]:await res}
+                const res = await authFlow() as SpotifyLocalSession|undefined
+                refreshedAuthObject = {...refreshedAuthObject, [SessionEnum[key]]:res}
+                refreshedIsAuthedObject = {...refreshedIsAuthedObject, [SessionEnum[key]]: res ? true:false}
                 break;
             }
             default:{
@@ -91,6 +96,11 @@ export const authCleanup = async (authObject:Record<string,any>):Promise<void>=>
         }
 
         
+    }
+    
+    return {
+        isAuthed: refreshedIsAuthedObject,
+        authObject: refreshedAuthObject
     }
 
 }
@@ -185,7 +195,7 @@ const deleteAuthInSecureStore = createAsyncThunk("auth/deleteAuthInSecureStore",
 )
 
 
-interface authState {
+export interface AuthState {
     isAuthed: SessionIsAuthedState,
     authObject: SessionObjectState
 } //figure out this typescript stuff tomorrow ugh
@@ -196,7 +206,7 @@ interface authState {
 const initState = {
     isAuthed: instantiateState(),
     authObject: instantiateState()
-} as authState
+} as AuthState
 
 //TODOS: for tomorrow CLEANUP WHATEVER IS GOING ON IN THIS REDUCER THAT I MADE TWO WEEKS AGO
 //export and construct reducer given initState and testaction
