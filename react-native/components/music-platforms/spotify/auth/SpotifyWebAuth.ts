@@ -7,7 +7,8 @@ import {spotify} from "../../../../../env.json";
 import { SpotifyServiceConfig } from '../../../../constants/ServiceConfigs';
 import type { SpotifyWebSession } from "../../../../types/AuthTypes";
 import { SessionEnum } from '../../../../constants/Auth';
-
+import { setAuthInSecureStore } from '../redux/actions';
+import store from '../../../../redux/store';
 export const SCOPES = [
     "app-remote-control", // maybe comment out if it interferes
     "playlist-modify-private",
@@ -56,13 +57,18 @@ prefetchConfiguration(config);
 
 const spotifyWebAuthFlow = async ():Promise<SpotifyWebSession>=>{
     const res:AuthorizeResult = await authorize(config);
-    return {
-        accessToken:res.accessToken,
-        refreshToken: res.refreshToken,
-        expirationDate: (new Date(res.accessTokenExpirationDate)).getTime(),
-        scope: res.scopes,
-        tokenType:res.tokenType,
+    const handleRes = async ()=>{
+        return({
+            accessToken:res.accessToken,
+            refreshToken: res.refreshToken,
+            expirationDate: (new Date(res.accessTokenExpirationDate)).getTime(),
+            scope: res.scopes,
+            tokenType:res.tokenType,
+        })
     }
+    const handledRes = handleRes();
+    store.dispatch(setAuthInSecureStore({payload:handledRes, type:SessionEnum.spotifyWebSession}));
+    return await handledRes;
 
 }
 const spotifyWebRefreshFlow = async(refreshToken:string)=>{

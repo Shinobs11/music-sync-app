@@ -1,7 +1,8 @@
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
-import { getAuthFromSecureStore, authCleanup } from '../redux/DUCKS/auth-duck';
+import { getAuthFromSecureStore, authCleanup, updateAuthState } from '../redux/DUCKS/auth-duck';
 import store from '../redux/store';
+import hydrateState from '../redux/hydrateState';
 
 
 
@@ -21,8 +22,8 @@ export default function useCachedResources() {
         // });
         //grab key from SecureStore(Coule be used for sessions and for authentication)
         
-
-        
+        //This should provide my redux store with "initialState" after the store has been created lol.
+        store.dispatch(updateAuthState(await hydrateState()));
         
 
 

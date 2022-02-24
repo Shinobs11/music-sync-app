@@ -79,15 +79,17 @@ export const authCleanup = async (authState:AuthState):Promise<AuthState>=>{
     for(const key in SessionEnum){
         switch(key){
             case SessionEnum.spotifyWebSession:{
-                const res:SpotifyWebSession|undefined =  await spotifyWebSessionCleanup();
-                refreshedAuthObject = {...refreshedAuthObject, [SessionEnum[key]]: res}
-                refreshedIsAuthedObject = {...refreshedIsAuthedObject, [SessionEnum[key]]: res ? true:false}
+                const res:Promise<SpotifyWebSession|undefined> =  spotifyWebSessionCleanup();
+                store.dispatch(setAuthInSecureStore({payload: res, type: SessionEnum[key]}));
+                refreshedAuthObject = {...refreshedAuthObject, [SessionEnum[key]]: await res}
+                refreshedIsAuthedObject = {...refreshedIsAuthedObject, [SessionEnum[key]]:await  res ? true:false}
                 break;
             }
             case SessionEnum.spotifyLocalSession:{
-                const res = await authFlow() as SpotifyLocalSession|undefined
-                refreshedAuthObject = {...refreshedAuthObject, [SessionEnum[key]]:res}
-                refreshedIsAuthedObject = {...refreshedIsAuthedObject, [SessionEnum[key]]: res ? true:false}
+                const res:Promise<SpotifyLocalSession|undefined> = authFlow()
+                store.dispatch(setAuthInSecureStore({payload: res, type: SessionEnum[key]}));
+                refreshedAuthObject = {...refreshedAuthObject, [SessionEnum[key]]: await res}
+                refreshedIsAuthedObject = {...refreshedIsAuthedObject, [SessionEnum[key]]:await  res ? true:false}
                 break;
             }
             default:{
@@ -105,9 +107,9 @@ export const authCleanup = async (authState:AuthState):Promise<AuthState>=>{
 
 }
 
-const updateAuthState = createAsyncThunk(authActionCreatorEnum.updateAuthState, async ()=>{
-
-})
+export const updateAuthState = createAction(authActionCreatorEnum.updateAuthState, (state: AuthState)=>{
+    return {payload: state};
+});
 
 const getAuthFromSecureStore = createAsyncThunk("auth/getAuthFromSecureStore",
     async (arg, thunk) => {
@@ -211,12 +213,15 @@ const initState = {
 //TODOS: for tomorrow CLEANUP WHATEVER IS GOING ON IN THIS REDUCER THAT I MADE TWO WEEKS AGO
 //export and construct reducer given initState and testaction
 export default createReducer(initState, (builder) => {
-    builder.addCase(getAuthFromSecureStore.fulfilled, (state, action:AnyAction) => {
+    builder.addCase(getAuthFromSecureStore.fulfilled, (state:AuthState, action:AnyAction) => {
         const payload:SessionObjectState = action.payload as SessionObjectState;    
         state = {...state, authObject: payload};
         }
     ),
     builder.addCase(getAuthFromSecureStore.rejected, (state, action) => {
+    })
+    builder.addCase(updateAuthState, (state:AuthState, action:AnyAction)=>{
+        state = action.payload
     })
 })
 

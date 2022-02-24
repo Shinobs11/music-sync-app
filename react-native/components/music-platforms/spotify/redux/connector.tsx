@@ -5,8 +5,8 @@ import * as actions from './actions';
 
 //mapState
 const mapStateToProps = (state: RootState)=>{
-    const {main, auth} = state;
-    return {test: main.test, isAuthed: auth.isAuthed, authObject:auth.authObject};
+    const { auth} = state;
+    return { isAuthed: auth.isAuthed, authObject:auth.authObject};
 }
 //mapDispatch
 const mapDispatchToProps = {

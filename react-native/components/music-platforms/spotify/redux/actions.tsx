@@ -1,1 +1,1 @@
-export {getAuthFromSecureStore, setAuthInSecureStore, deleteAuthInSecureStore} from '../../../../redux/DUCKS/auth-duck';
+export {getAuthFromSecureStore, setAuthInSecureStore, deleteAuthInSecureStore, updateAuthState} from '../../../../redux/DUCKS/auth-duck';

@@ -10,13 +10,14 @@ import { SessionEnum } from '../../../constants/Auth';
 type Props = PropsFromRedux & {};
 
 function SpotifyContainer(props: Props) {
-    const { isAuthed, authObject, setAuthInSecureStore, getAuthFromSecureStore, deleteAuthInSecureStore } = props;
+    const { isAuthed, authObject, setAuthInSecureStore, getAuthFromSecureStore, deleteAuthInSecureStore, updateAuthState } = props;
 
-
-    const onPress = () => {
-        setAuthInSecureStore({ payload: spotifyWebAuthFlow(), type: SessionEnum.spotifyWebSession });
+    //!! THINK OF A BETTER WAY TO DO THIS UGGHHHHHHHHH
+    const onPress = async () => {
+        updateAuthState({await spotifyWebAuthFlow()});
     }
-
+    console.log(authObject)
+    console.log(isAuthed)
 
     useEffect(() => {
 
