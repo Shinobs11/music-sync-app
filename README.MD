@@ -1,2 +1,2 @@
 # music-sync-app
-Currently developing UI for app, will continue after the meat of that is finished.
+On pause until I can lock down an internship. Priorities and what not.
